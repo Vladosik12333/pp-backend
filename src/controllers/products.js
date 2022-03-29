@@ -1,7 +1,11 @@
 const { Products } = require("../models/products");
 
-const addProduct = async (req, res) => {};
+const getAllProducts = async (req, res) => {
+  const products = await Products.find({});
+
+  res.json({ products });
+};
 
 module.exports = {
-  addProduct,
+  getAllProducts,
 };
