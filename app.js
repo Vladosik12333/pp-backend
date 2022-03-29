@@ -2,6 +2,9 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("./swagger.yaml");
 
 const productsRouter = require("./src/routes/products");
 const usersRouter = require("./src/routes/users");
@@ -11,6 +14,7 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/products", productsRouter);
 app.use("/api/users", usersRouter);

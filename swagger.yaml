@@ -1,0 +1,43 @@
+openapi: 3.0.0
+info:
+  title: Pizza Project Backend
+  version: 1.0.0
+tags:
+  - name: "Products"
+    description: "Products endpoint."
+paths:
+  /api/products:
+    get:
+      tags:
+        - "Products"
+      summary: Returns a list of products.
+      responses:
+        "200":
+          description: "All right."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: number
+                    imageUrl:
+                      type: string
+                    category:
+                      type: string
+                    addition:
+                      type: array
+                      items:
+                        type: string
+        "400":
+          description: Bad request.
+        "404":
+          description: Bad path in request.
+        "500":
+          description: Some problems in server. Try again.
