@@ -5,6 +5,8 @@ info:
 tags:
   - name: "Products"
     description: "Products endpoint."
+  - name: "Users"
+    description: "Users endpoint."
 paths:
   /api/products:
     get:
@@ -38,6 +40,117 @@ paths:
                           type: array
                           items:
                             type: string
+        "400":
+          description: Bad request.
+        "404":
+          description: Bad path in request.
+        "500":
+          description: Some problems in server. Try again.
+  /api/users/signup:
+    post:
+      tags:
+        - "Users"
+      summary: Registration user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                name:
+                  type: string
+                surname:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: "All right."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      login:
+                        type: string
+                      name:
+                        type: string
+                      surname:
+                        type: string
+        "409":
+          description: Email in use.
+        "400":
+          description: Bad request.
+        "404":
+          description: Bad path in request.
+        "500":
+          description: Some problems in server. Try again.
+  /api/users/signin:
+    post:
+      tags:
+        - "Users"
+      summary: Authorization user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: "All right."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      login:
+                        type: string
+                      name:
+                        type: string
+                      surname:
+                        type: string
+        "401":
+          description: Email or password is wrong.
+        "400":
+          description: Bad request.
+        "404":
+          description: Bad path in request.
+        "500":
+          description: Some problems in server. Try again.
+  /api/users/logout:
+    post:
+      tags:
+        - "Users"
+      summary: Logout user.
+      parameters:
+        - name: Token
+          in: header
+          description: Authorization
+          schema:
+            type: string
+          required: true
+      responses:
+        "204":
+          description: Logout successful.
+        "401":
+          description: Not authorized.
         "400":
           description: Bad request.
         "404":
