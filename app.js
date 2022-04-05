@@ -12,7 +12,8 @@ const usersRouter = require("./src/routes/users");
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
-app.use(cors({ origin: "https://palens-pizzahouse.netlify.app" }));
+// app.use(cors({ origin: "https://palens-pizzahouse.netlify.app" }));
+app.use(cors());
 app.use(express.json());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
