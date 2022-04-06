@@ -1,7 +1,7 @@
-const { User } = require("../models/users");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const { User } = require('../models/users');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const { SECRET_KEY } = process.env;
 
@@ -11,7 +11,7 @@ const signup = async (req, res) => {
   const user = await User.findOne({ login });
 
   if (user) {
-    res.status(409).json({ message: "Email in use" });
+    res.status(409).json({ message: 'Email in use' });
     return;
   }
 
@@ -23,7 +23,7 @@ const signup = async (req, res) => {
     password: hashPass,
   });
 
-  const token = jwt.sign({ id: _id }, SECRET_KEY, { expiresIn: "1d" });
+  const token = jwt.sign({ id: _id }, SECRET_KEY, { expiresIn: '1d' });
 
   await User.findOneAndUpdate({ _id }, { token });
 
@@ -43,12 +43,12 @@ const signin = async (req, res) => {
   const user = await User.findOne({ login });
 
   if (!user || !bcrypt.compareSync(password, user.password)) {
-    res.status(401).json({ message: "Email or password is wrong" });
+    res.status(401).json({ message: 'Email or password is wrong' });
     return;
   }
 
   const { _id, name, surname } = user;
-  const token = jwt.sign({ id: _id }, SECRET_KEY, { expiresIn: "1d" });
+  const token = jwt.sign({ id: _id }, SECRET_KEY, { expiresIn: '1d' });
   await User.findByIdAndUpdate({ _id }, { token });
 
   res.json({
@@ -69,8 +69,15 @@ const logout = async (req, res) => {
   res.status(204).json();
 };
 
+const current = async (req, res) => {
+  const { token, name, surname, login } = req.user;
+
+  res.status(200).json({ token, user: { login, name, surname } });
+};
+
 module.exports = {
   signup,
   signin,
   logout,
+  current,
 };
